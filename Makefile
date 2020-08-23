@@ -1,16 +1,35 @@
-IMAGE_NAME = "opsani/servo-connector-templates:latest"
+IMAGE_NAME = "opsani/servo-templates:latest"
 
 .PHONY: build
 build:
-	echo "building container image ${IMAGE_NAME}..."
 	docker build -t ${IMAGE_NAME} .
+
+.PHONY: clean
+clean:
+	@rm -rf ./build/*
 
 .PHONY: run
 run: build
-	echo "generating connector to ./build"
-	mkdir -p ./build
-	cd ./build && docker run -it -v $(pwd):/connector ${IMAGE_NAME}
+	@mkdir -p ./build
+	docker run -it -v $(CURDIR)/build:/build ${IMAGE_NAME} --directory=${TEMPLATE_SUBDIR} --no-input
 
 .PHONY: push
 push: build
 	docker push ${IMAGE_NAME}
+
+# Convenience targets
+
+.PHONY: assembly
+assembly:
+	@$(MAKE) -e TEMPLATE_SUBDIR="assembly" run
+
+.PHONY: connector
+connector:	
+	@$(MAKE) -e TEMPLATE_SUBDIR="connector" run
+
+.PHONY: all
+SUBDIRS = $(shell ls -d */)
+all: clean
+	# TODO: Should be a standard recursive make invocation
+	@$(MAKE) assembly
+	@$(MAKE) connector

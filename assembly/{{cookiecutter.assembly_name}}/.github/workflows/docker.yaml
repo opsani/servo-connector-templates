@@ -1,4 +1,4 @@
-name: Docker
+name: Build Docker Image
 on:
   push:
     branches: ["*"]
@@ -17,10 +17,12 @@ jobs:
       env:
         DOCKER_BUILDKIT: 1
       with:
+        {%- raw %}
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        repository: opsani/servo-templates
+        {%- endraw %}
+        repository: {{ cookiecutter.image_name }}
         tag_with_ref: true
         add_git_labels: true
-        cache_froms: opsani/servo-templates:${{ steps.extract_branch.outputs.branch }}, opsani/servo-templates:latest
-        build_args: BUILDKIT_INLINE_CACHE=1
+        cache_froms: {{ cookiecutter.image_name }}:{%- raw %}${{ steps.extract_branch.outputs.branch }}{%- endraw %}, {{ cookiecutter.image_name }}:latest
+        build_args: BUILDKIT_INLINE_CACHE=1,SERVO_ENV=development

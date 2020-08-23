@@ -1,25 +1,30 @@
-# servo-connector-templates
-[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/opsani/servo-connector-templates)](https://hub.docker.com/r/opsani/servo-connector-templates)
-[![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/opsani/servo-connector-templates)](https://hub.docker.com/r/opsani/servo-connector-templates)
+# servo-templates
+[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/opsani/servo-templates)](https://hub.docker.com/r/opsani/servo-templates)
+[![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/opsani/servo-templates)](https://hub.docker.com/r/opsani/servo-templates)
 
 This repository contains a set of [cookiecutter](https://github.com/audreyr/cookiecutter) templates 
-for generating new connectors for use in [Opsani Servo](https://github.com/opsani/servox) assemblies. 
-The same core set of tools used in the servo are installed and configured in the generated project 
-including [Poetry](https://python-poetry.org/), [Pytest](https://docs.pytest.org/en/stable/), 
-and [asyncio](https://asyncio.readthedocs.io/en/latest/).
+for generating new projects for use with [Opsani Servo](https://github.com/opsani/servox). 
 
-It will generate a configuration class, a connector class, and optionally a
-CLI class and scaffold tests for the classes. A basic README.md is generated
-and the LICENSE file is populated.
+## Available templates
 
-Python packaging is set up via pyproject.toml and an entry point
-is configured to allow the Servo to auto-discover the new connector.
+Each template lives within a subdirectory of this repository. Each template is documented independently in the 
+README.md within the template subdirectory.
 
-Several GitHub Actions are auto-configured for project automation including continuous
-integration and automatic publication to PyPi upon publishing a new release.
+### Assembly
 
-In order for automatic package publication to succeed a `PYPI_TOKEN` secret must be configured
-on the GitHub repository before publishing a release.
+The [assembly](assembly) template provides support for generating new servo assemblies. An assembly is a versioned, 
+distributable container that includes the base servo and a chosen set of connectors. Opsani maintains and distributes
+a canonical set of assembly container images but from time to time it may become necessary to create a new assembly
+to meet specific needs (e.g. integrating with a proprietary system or handling specific requirements such as version
+mandates). The assembly template configures Python package management, a Dockerfile for building the assembly image,
+and supporting automation.
+
+### Connector
+
+The [connector](connector) template enables generation of new servo connectors. Connectors are plugins for the servo
+that provide functionality and connectivity to resources and systems for optimization. They are developed and distributed 
+as standard Python libraries. The template generates a connector scaffold configured according to best practices and 
+standard tooling recommended by Opsani.
 
 ## Usage
 
@@ -35,50 +40,67 @@ Alternatively, you can install cookiecutter with Homebrew (macOS only):
 $ brew install cookiecutter
 ```
 
-Finally, to run it based on this template, execute:
+To run a template, identify the name of its subdirectory (e.g. `assembly` or `connector`) and invoke cookiecutter:
 
 ```console
-$ cookiecutter https://github.com/opsani/servo-connector-templates.git
+$ cookiecutter https://github.com/opsani/servo-templates.git --directory=[TEMPLATE_SUBDIR_NAME]
 ```
 
-You will be asked about your basic info (name, email, connector name, options, etc). This info will be used to customize your new project.
+You will be prompted to provide necessary input to configure your new project.
 
-If you are customizing the template, you can build and run from a local working copy:
+If you are customizing the templates, you can build and run from a local working copy:
 
 ```console
-$ git clone https://github.com/opsani/servo-connector-templates.git
-$ cd servo-connector-templates
+$ git clone https://github.com/opsani/servo-templates.git
+$ cd servo-templates
 $ poetry install
-$ poetry run cookiecutter .
+$ poetry run cookiecutter . --directory=[TEMPLATE_SUBDIR]
 ```
 
 ### Running under Docker
 
-Container images and a Dockerfile are provided if you would prefer to generate the project within Docker. 
-The container will write the generated project to `/connector`. You can use a bind mount to let the 
-container write out the generated files to the host:
+Container images and a Dockerfile are provided if you would prefer to generate your projects within Docker. 
+The container will write the generated project to the `/build` path. You can use a bind mount a directory
+to let the container write out the generated files to the host filesystem:
 
 ```console
-$ docker run --rm -it -v $(pwd):/connector opsani/servo-connector-templates:latest
+$ docker run --rm -it -v $(pwd):/build opsani/servo-templates:latest --directory=[TEMPLATE_SUBDIR]
 ```
 
-If you are customizing the template, you can build and run from a local working copy:
+If you are customizing the templates, you can build and run from a local working copy:
 
 ```console
-$ git clone https://github.com/opsani/servo-connector-templates.git
-$ docker build -t opsani/servo-connector-templates:latest servo-connector-templates
-$ docker run --rm -it -v $(pwd):/connector opsani/servo-connector-templates:latest
+$ git clone https://github.com/opsani/servo-templates.git
+$ docker build -t opsani/servo-templates:latest servo-templates
+$ docker run --rm -it -v $(pwd):/build opsani/servo-templates:latest --directory=[TEMPLATE_SUBDIR]
 ```
 
 There are also Makefile shortcuts for building and running the image:
 
 ```console
+# Build the container image
 $ make build
-$ make run
+
+# Run a specific template
+$ make -e TEMPLATE_SUBDIR=[TEMPLATE_SUBDIR] run
+
+# Convenience aliases for running templates
+$ make assembly
+$ make connector
 ```
+
+## Template Customization
+
+Templates are vanilla cookiecutter implementations. Each template subdirectory has 
+a `cookiecutter.json` file that defines the context and configuration options.
+
+Filenames, directory names, and file content are templated via [Jinja2](https://jinja.palletsprojects.com/en/2.11.x/).
+
+Refer to the [cookiecutter](https://cookiecutter.readthedocs.io/) documentation site
+for specifics about the templating environment, examples, and reference projects.
 
 ## License
 
-servo-connector-templates is distributed under the terms of the Apache 2.0 Open Source license.
+servo-templates is distributed under the terms of the Apache 2.0 Open Source license.
 
 A copy of the license is provided in the [LICENSE](LICENSE) file at the root of the repository.

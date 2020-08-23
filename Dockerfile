@@ -13,15 +13,14 @@ ENV \
     POETRY_VIRTUALENVS_CREATE=false \
     POETRY_CACHE_DIR='/var/cache/pypoetry'
 
-# Install git
-RUN apt-get update \
-  && apt-get install -y git
-
 WORKDIR /templates
 
-COPY . ./
-
+# Install dependencies first to get cache hits
+COPY pyproject.toml poetry.lock ./
 RUN pip install poetry==1.0.* \
   && poetry install
 
-CMD poetry run cookiecutter -o /connector /templates
+COPY . ./
+
+ENTRYPOINT ["poetry", "run", "cookiecutter", "-o", "/build", "/templates"]
+CMD ["--help"]

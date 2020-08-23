@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "servo-connector-templates"
+name = "servo-templates"
 version = "0.1.0"
-description = "Templates for generating Servo Connector projects"
+description = "Templates for generating Servo projects"
 authors = ["Blake Watters <blake@opsani.com>"]
 license = "Apache-2.0"
 

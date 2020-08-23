@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  servo:
+    image: {{ cookiecutter.image_name }}
+    build:
+      context: .
+    restart: always
+    environment:
+      - SERVO_ENV=${SERVO_ENV:-development}
+      - OPSANI_OPTIMIZER=${OPSANI_OPTIMIZER:?Opsani Optimizer must be configured}
+      - OPSANI_TOKEN=${OPSANI_TOKEN}
+    volumes:
+      - type: bind
+        source: ./servo.yaml
+        target: /servo/servo.yaml
+        read_only: true
+      - type: bind
+        source: ${OPSANI_TOKEN_FILE:-/dev/null}
+        target: /servo/opsani.token
+        read_only: true
+      - type: bind
+        source: ${HOME}/.kube
+        target: /root/.kube
+        read_only: true
+      - type: bind
+        source: ${HOME}/.aws
+        target: /root/.aws
+        read_only: true

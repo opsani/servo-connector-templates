@@ -16,19 +16,6 @@ def run_command(command: str):
     if process.returncode != 0:
         raise RuntimeError(f"command failed with non-zero exit code {process.returncode}: {command}")
 
-def init_git():
-    """
-    Initialises git on the new project folder
-    """
-    GIT_COMMANDS = [
-        "git init",
-        "git add .",
-        "git commit -a -m Initial Commit."
-    ]
-
-    for command in GIT_COMMANDS:
-        run_command(command)
-
 def install_deps():
     """
     Install the dependencies via Poetry
@@ -36,9 +23,3 @@ def install_deps():
     run_command("poetry install")
 
 install_deps()
-
-{%- if cookiecutter.init_git|lower == "y" %}
-init_git()
-{%- else %}
-print("skipping git init...")
-{%- endif %}
