@@ -1,0 +1,29 @@
+{
+    "full_name": "Blake Watters",
+    "email": "blake@opsani.com",
+    "github_org": "opsani",
+    "connector_name": "new-connector",
+    "module_name": "{{ cookiecutter.connector_name|lower|replace('-', '_') }}",
+    "description": "A connector for Opsani Servo",
+    "repository": "https://github.com/{{ cookiecutter.github_org }}/{{ cookiecutter.connector_name }}",
+    "homepage": "{{ cookiecutter.repository }}",
+    "version": "0.1.0",
+    "license": [
+        "Apache-2.0",
+        "BSD-2-Clause",
+        "BSD-3-Clause",
+        "BSD-4-Clause",
+        "GPL-2.0-only",
+        "GPL-2.0-or-later",
+        "GPL-3.0-only",
+        "GPL-3.0-or-later",
+        "LGPL-2.1-only",
+        "LGPL-2.1-or-later",
+        "LGPL-3.0-only",
+        "LGPL-3.0-or-later",
+        "MIT",
+        "Proprietary"
+    ],
+    "generate_cli": "n",
+    "init_git": "n"
+}
