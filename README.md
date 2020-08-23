@@ -1,6 +1,6 @@
 # servo-connector-templates
-![Docker Image Version (latest semver)](https://img.shields.io/docker/v/opsani/servo-connector-templates)
-![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/opsani/servo-connector-templates)
+[![Docker Image Version (latest semver)](https://img.shields.io/docker/v/opsani/servo-connector-templates)](https://hub.docker.com/r/opsani/servo-connector-templates)
+[![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/opsani/servo-connector-templates)](https://hub.docker.com/r/opsani/servo-connector-templates)
 
 This repository contains a set of [cookiecutter](https://github.com/audreyr/cookiecutter) templates 
 for generating new connectors for use in [Opsani Servo](https://github.com/opsani/servox) assemblies. 
