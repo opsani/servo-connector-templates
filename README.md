@@ -1,4 +1,5 @@
 # servo-connector-templates
+[![Docker Image Version](https://images.microbadger.com/badges/version/opsani/servo-connector-templates.svg)](https://microbadger.com/images/opsani/servo-connector-templates)
 ![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/opsani/servo-connector-templates)
 
 This repository contains a set of [cookiecutter](https://github.com/audreyr/cookiecutter) templates 
