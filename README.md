@@ -60,7 +60,7 @@ $ poetry run cookiecutter . --directory=[TEMPLATE_SUBDIR]
 ### Running under Docker
 
 Container images and a Dockerfile are provided if you would prefer to generate your projects within Docker. 
-The container will write the generated project to the `/build` path. You can use a bind mount a directory
+The container will write the generated project to the `/build` path. You can bind mount a directory
 to let the container write out the generated files to the host filesystem:
 
 ```console
