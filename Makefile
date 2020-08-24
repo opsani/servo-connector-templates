@@ -2,7 +2,7 @@ IMAGE_NAME = "opsani/servo-templates:latest"
 
 .PHONY: build
 build:
-	docker build -t ${IMAGE_NAME} .
+	docker build -t $(IMAGE_NAME) .
 
 .PHONY: clean
 clean:
@@ -11,25 +11,32 @@ clean:
 .PHONY: run
 run: build
 	@mkdir -p ./build
-	docker run -it -v $(CURDIR)/build:/build ${IMAGE_NAME} --directory=${TEMPLATE_SUBDIR} --no-input
+	docker run -it -v $(CURDIR)/build:/build \
+		-e SERVO_SKIP_DEPS=true \
+		$(IMAGE_NAME) $(COOKIECUTTER_ARGS)
 
 .PHONY: push
 push: build
-	docker push ${IMAGE_NAME}
+	docker push $(IMAGE_NAME)
 
 # Convenience targets
 
 .PHONY: assembly
+assembly: export COOKIECUTTER_ARGS += "--directory=assembly"
 assembly:
-	@$(MAKE) -e TEMPLATE_SUBDIR="assembly" run
+	@$(MAKE) run
 
 .PHONY: connector
-connector:	
-	@$(MAKE) -e TEMPLATE_SUBDIR="connector" run
+connector: export COOKIECUTTER_ARGS += "--directory=connector"
+connector:
+	@$(MAKE) run
 
 .PHONY: all
-SUBDIRS = $(shell ls -d */)
 all: clean
 	# TODO: Should be a standard recursive make invocation
 	@$(MAKE) assembly
 	@$(MAKE) connector
+
+.PHONY: all
+test: export COOKIECUTTER_ARGS += "--no-input"
+test: all

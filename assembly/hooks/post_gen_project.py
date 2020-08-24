@@ -2,6 +2,7 @@
 import os
 import subprocess
 import shlex
+from pathlib import Path
 
 PROJECT_DIRECTORY = os.path.realpath(os.path.curdir)
 
@@ -32,3 +33,7 @@ remove_file("kubernetes.yaml")
 {%- if cookiecutter.docker_compose|lower != "y" %}
 remove_file("docker-compose.yaml")
 {%- endif %}
+
+# Create a placeholder config file
+# Docker will mkdir if we don't have a file in place on volume mount
+Path("servo.yaml").touch()

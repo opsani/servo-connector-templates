@@ -22,4 +22,5 @@ def install_deps():
     """
     run_command("poetry install")
 
-install_deps()
+if not os.getenv("SERVO_SKIP_DEPS"):
+    install_deps()
